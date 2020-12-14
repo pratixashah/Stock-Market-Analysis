@@ -5,46 +5,56 @@ Dim rowNumer As Long
 
 Dim openPrice As Double
 Dim closePrice As Double
-Dim totalStock As Long
+Dim totalStock As Double
 
-
+'Total no. of rows of data
 totalRows = Cells(Rows.Count, 1).End(xlUp).Row
-rowNumer = 2
 
-openPrice = 0
+'Row no. from where it starts to print summary
+'1st Row is for Header so starts with 2nd
+rowNumber = 2
 
-'MsgBox (lastRow)
-
+'To display Header
 Range("I1").Value = "<ticker>"
 Range("J1").Value = "Yearly Change"
 Range("K1").Value = "Percentage Change"
 Range("L1").Value = "Total Stock Volume"
 
-For i = 2 To totalRows - 1
+'Loop from 2nd rows to total no. of rows
+'First row has Header so starts with 2nd row
+For i = 2 To totalRows
 
+    'To get first open price from first row
     If i = 2 Then
-            openPrice = Cells(i, 3).Value
-            totalStock = Cells(i, 7).Value
-        End If
+        openPrice = Cells(i, 3).Value
+    End If
         
+    'To get Total Stock Volume
+    totalStock = totalStock + Cells(i, 7).Value
+       
+    'For New Ticker value
     If Cells(i, 1).Value <> Cells(i + 1, 1).Value Then
                
+        'To get close price from last row of same Ticker value
         closePrice = Cells(i, 6).Value
-        totalStock = 0
                 
-        Range("I" & rowNumer).Value = Cells(i, 1).Value & openPrice & " " & closePrice & "="
-        Range("J" & rowNumer).Value = openPrice - closePrice
-        Range("K" & rowNumer).Value = (Range("J" & rowNumer).Value / openPrice) * 100 & "%"
-        Range("L" & rowNumer).Value = totalStock
+        'To print Ticker, Yearly Change, Percentage Change, Total Stock Volume values
+        Range("I" & rowNumber).Value = Cells(i, 1).Value '& openPrice & " " & closePrice & "="
+        Range("J" & rowNumber).Value = openPrice - closePrice
+        Range("K" & rowNumber).Value = (Range("J" & rowNumber).Value / openPrice) * 100 & "%"
+        Range("L" & rowNumber).Value = totalStock
                 
-        rowNumer = rowNumer + 1
+        'To get next row number to print
+        rowNumber = rowNumber + 1
+        
+        'To get open price for next Ticker
         openPrice = Cells(i + 1, 3).Value
         
-    Else
-        'totalStock = totalStock + Cells(i, 7).Value
+        'Reset Total Stock value for next Ticker
+        totalStock = 0
     End If
     
-
 Next i
 
 End Sub
+
