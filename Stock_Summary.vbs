@@ -1,24 +1,36 @@
 Sub Stock_Summary()
 
+'To get total number of rows
 Dim totalRows As Long
+
+'To get row number for where to print
 Dim rowNumer As Long
 
 Dim openPrice As Double
 Dim closePrice As Double
 Dim totalStock As Double
 
+'To get Greatest increase, decrease and Total volume of stocks with its Ticket resp.
+Dim maxIncreaseTicker As String
+Dim maxDecreaseTicker As String
+Dim maxTotalVolumeTicker As String
+
+Dim maxIncrease As Long
+Dim maxDecrease As Long
+Dim maxTotalVolume As Double
+
 'Total no. of rows of data
 totalRows = Cells(Rows.Count, 1).End(xlUp).Row
+
+'To display Header for Summary
+Range("I1").Value = "Ticker"
+Range("J1").Value = "Yearly Change"
+Range("K1").Value = "Percentage Change"
+Range("L1").Value = "Total Stock Volume"
 
 'Row no. from where it starts to print summary
 '1st Row is for Header so starts with 2nd
 rowNumber = 2
-
-'To display Header
-Range("I1").Value = "<ticker>"
-Range("J1").Value = "Yearly Change"
-Range("K1").Value = "Percentage Change"
-Range("L1").Value = "Total Stock Volume"
 
 'Loop from 2nd rows to total no. of rows
 'First row has Header so starts with 2nd row
@@ -32,7 +44,7 @@ For i = 2 To totalRows
     'To get Total Stock Volume
     totalStock = totalStock + Cells(i, 7).Value
        
-    'For New Ticker value
+    'For next New Ticker value
     If Cells(i, 1).Value <> Cells(i + 1, 1).Value Then
                
         'To get close price from last row of same Ticker value
@@ -44,6 +56,22 @@ For i = 2 To totalRows
         Range("K" & rowNumber).Value = (Range("J" & rowNumber).Value / openPrice) * 100 & "%"
         Range("L" & rowNumber).Value = totalStock
                 
+              
+        'To find Greatest increase, decrease in Stocks with its Ticker resp.
+        If Range("J" & rowNumber).Value > maxIncrease Then
+            maxIncrease = Range("J" & rowNumber).Value
+            maxIncreaseTicker = Cells(i, 1).Value
+        ElseIf Range("J" & rowNumber).Value < maxDecrease Then
+            maxDecrease = Range("J" & rowNumber).Value
+            maxDecreaseTicker = Cells(i, 1).Value
+        End If
+            
+        'To find Greatest Total Volume in Stocks with its Ticker resp.
+        If Range("L" & rowNumber).Value > maxTotalVolume Then
+            maxTotalVolumeTicker = Cells(i, 1).Value
+            maxTotalVolume = Range("L" & rowNumber).Value
+        End If
+        
         'To get next row number to print
         rowNumber = rowNumber + 1
         
@@ -55,6 +83,20 @@ For i = 2 To totalRows
     End If
     
 Next i
+
+Range("N2").Value = "Greatest % increase"
+Range("N3").Value = "Greatest % decrease"
+Range("N4").Value = "Greatest Total Volume"
+Range("O1").Value = "Ticker"
+Range("P1").Value = "Value"
+
+Range("O2").Value = maxIncreaseTicker
+Range("O3").Value = maxDecreaseTicker
+Range("O4").Value = maxTotalVolumeTicker
+
+Range("P2").Value = maxIncrease
+Range("P3").Value = maxDecrease
+Range("P4").Value = maxTotalVolume
 
 End Sub
 
