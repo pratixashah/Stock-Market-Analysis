@@ -87,10 +87,10 @@ For Each ws In Worksheets
             If (openPrice > 0) Then
                 If ws.Range("K" & rowNumber).Value > maxIncrease Then
                     maxIncrease = ws.Range("K" & rowNumber).Value
-                    maxIncreaseTicker = Cells(i, 1).Value
+                    maxIncreaseTicker = ws.Cells(i, 1).Value
                 ElseIf ws.Range("K" & rowNumber).Value < maxDecrease Then
                     maxDecrease = ws.Range("K" & rowNumber).Value
-                    maxDecreaseTicker = Cells(i, 1).Value
+                    maxDecreaseTicker = ws.Cells(i, 1).Value
                 End If
              End If
              
@@ -124,14 +124,15 @@ For Each ws In Worksheets
     ws.Range("O3").Value = maxDecreaseTicker
     ws.Range("O4").Value = maxTotalVolumeTicker
     
-    ws.Range("P2").Value = maxIncrease
-    ws.Range("P3").Value = maxDecrease
+    ws.Range("P2").Value = maxIncrease * 100 & "%"
+    ws.Range("P3").Value = maxDecrease * 100 & "%"
     ws.Range("P4").Value = maxTotalVolume
 
 Next ws
 
 
 End Sub
+
 
 
 
