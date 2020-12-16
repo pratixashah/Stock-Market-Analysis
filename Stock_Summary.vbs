@@ -56,7 +56,13 @@ For i = 2 To totalRows
         Range("K" & rowNumber).Value = (Range("J" & rowNumber).Value / openPrice) * 100 & "%"
         Range("L" & rowNumber).Value = totalStock
                 
-              
+        'Conditional formatting - positive increase display with Green color and negative with Red color
+        If (Range("J" & rowNumber).Value > 0) Then
+            Range("J" & rowNumber).Interior.ColorIndex = 4
+        ElseIf (Range("J" & rowNumber).Value < 0) Then
+            Range("J" & rowNumber).Interior.ColorIndex = 3
+        End If
+        
         'To find Greatest increase, decrease in Stocks with its Ticker resp.
         If Range("J" & rowNumber).Value > maxIncrease Then
             maxIncrease = Range("J" & rowNumber).Value
@@ -68,8 +74,8 @@ For i = 2 To totalRows
             
         'To find Greatest Total Volume in Stocks with its Ticker resp.
         If Range("L" & rowNumber).Value > maxTotalVolume Then
-            maxTotalVolumeTicker = Cells(i, 1).Value
             maxTotalVolume = Range("L" & rowNumber).Value
+            maxTotalVolumeTicker = Cells(i, 1).Value
         End If
         
         'To get next row number to print
@@ -84,12 +90,14 @@ For i = 2 To totalRows
     
 Next i
 
+'To display Header Greatest increase, decrease and Total volume of stocks
 Range("N2").Value = "Greatest % increase"
 Range("N3").Value = "Greatest % decrease"
 Range("N4").Value = "Greatest Total Volume"
 Range("O1").Value = "Ticker"
 Range("P1").Value = "Value"
 
+'To set values
 Range("O2").Value = maxIncreaseTicker
 Range("O3").Value = maxDecreaseTicker
 Range("O4").Value = maxTotalVolumeTicker
