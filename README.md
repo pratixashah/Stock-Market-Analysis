@@ -1,7 +1,7 @@
 # VBA
 
 
-This VBA Script is based on millions of stock data separated by year in each worksheet. 
+This VBA Script can process millions of stock data separated by year in each worksheet. 
 
 - This script works for all the worksheets in the same file at the same time.
 - The script includes output for each Ticker with its Yearly Change, Change in Percentage and Total Stock volume
